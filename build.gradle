@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: springBootVersion
+        classpath group: 'com.github.ben-manes', name: 'gradle-versions-plugin', version: gradlePluginVersion
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'com.github.ben-manes.versions'
+
+    version = project_version
+    group = project_group
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        flatDir {
+            dirs "${rootDir}/libs"
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            failOnVersionConflict()
+            preferProjectModules()
+            // cache dynamic versions for 10 minutes
+            cacheDynamicVersionsFor 10 * 60, 'seconds'
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+        }
+    }
+
+    dependencies {
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
+        //logging
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
+        implementation group: 'ch.qos.logback.contrib', name: 'logback-json-classic', version: logbackJsonVersion
+        implementation group: 'ch.qos.logback.contrib', name: 'logback-jackson', version: logbackJsonVersion
+
+        // Spring
+        implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
+
+        // testing
+        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
+        testImplementation group: 'com.h2database', name: 'h2', version: h2databaseVersion
+        testImplementation group: 'junit', name: 'junit', version: '4.12'
+    }
+
+    compileJava {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+
+}

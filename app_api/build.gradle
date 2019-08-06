@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+
+version = project_version
+group = project_group
+mainClassName = "com.sample.Application"
+bootJar {
+    archiveFileName = 'service.jar'
+    version = project_version
+    launchScript {
+        properties 'initInfoProvides': 'sample'
+        properties 'initInfoShortDescription': 'sample application'
+        properties 'initInfoDescription': 'Sample Application'
+    }
+}
+
+dependencies {
+    implementation project(':lib_core')
+
+    // spring
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: springBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
+    implementation group: 'org.springframework.retry', name: 'spring-retry', version: springRetryVersion
+}

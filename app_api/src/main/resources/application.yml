@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+logging:
+  level:
+#    org.springframework.web: TRACE
+#    org.springframework.transaction: TRACE
+#    org.hibernate.type: TRACE
+    com.sample: TRACE
+    root: WARN
+
+spring:
+  main:
+    banner-mode: "off"
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: UTC
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+#        show_sql: true
+#        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3309/sample?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password:
